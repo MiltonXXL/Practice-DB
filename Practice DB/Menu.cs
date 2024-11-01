@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 
+
 namespace Practice_DB
 {
     internal class Menu
@@ -34,21 +35,23 @@ namespace Practice_DB
                         Console.WriteLine("Ange hemstad: ");
                         string? City = Console.ReadLine();
 
-                        dbCtx.Add(new Student( FirstName, LastName, City));  
+                        dbCtx.Add(new Student(FirstName, LastName, City));
                         dbCtx.SaveChanges();
                         break;
 
                     case 2:
-                        Console.WriteLine("Ange förnamn på student du vill ändra: ");
                         ShowListStudents(dbCtx);
-                        string? nameChoice = Console.ReadLine();
-                        var student = dbCtx.Students.Where(s => s.FirstName == nameChoice).FirstOrDefault<Student>();
+                        Console.WriteLine("\nAnge id på studenten du vill ändra: ");
+                        int idChoice = Convert.ToInt32(Console.ReadLine());
+
+                        var student = dbCtx.Students.Where(s => s.StudentID == idChoice).FirstOrDefault<Student>();
                         Console.WriteLine("Vad vill du ändra? \n" +
                             "1. Förnamn \n" +
                             "2. Efternamn \n" +
                             "3. Hemstad \n" +
-                            "4. Samtliga");
+                            "4. Samtliga uppgifter");
                         int choice = Convert.ToInt32(Console.ReadLine());
+
                         if (choice == 1)
                         {
                             Console.WriteLine("Vilket namn ska det vara?: ");
@@ -70,7 +73,7 @@ namespace Practice_DB
                             student.City = cityChoice;
                             break;
                         }
-                        else 
+                        else
                             Console.WriteLine("Ange nytt förnamn: ");
                             string? newFName = Console.ReadLine();
                             student.FirstName = newFName;
@@ -79,7 +82,7 @@ namespace Practice_DB
                             student.LastName = newLName;
                             Console.WriteLine("Ange ny hemstad: ");
                             string? newCity = Console.ReadLine();
-                        student.City = newCity;
+                            student.City = newCity;
                             break;
 
                     case 3:
@@ -105,8 +108,10 @@ namespace Practice_DB
         {
             foreach (Student s in dbCtx.Students)
             {
-                Console.WriteLine($"{s.FirstName} {s.LastName} {s.City}");
+                Console.WriteLine($"{s.StudentID} \t{s.FirstName} {s.LastName} {s.City}");
             }
         }
+
+
     }
 }
